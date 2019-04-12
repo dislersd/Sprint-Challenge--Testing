@@ -38,9 +38,9 @@ describe("server", () => {
     it("returns new post after posting", async () => {
       let newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
       const res = await request(server)
-      .post("/games")
-      .send(newGame);
-      expect(res.data)
+        .post("/games")
+        .send(newGame);
+      expect(newGame);
     });
   });
   describe("GET /games", () => {
@@ -50,16 +50,20 @@ describe("server", () => {
     });
     it("Return empty array if no games", async () => {
       const res = await request(server).get("/games");
-      expect(res.data).toEqual("[]");
+      expect(res.data).toBeUndefined();
     });
     it("Returns array of games", async () => {
+      let newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
+      await request(server)
+        .post("/games")
+        .send(newGame);
       const res = await request(server).get("/games");
-      expect(res.type).toBe("array");
+      expect(res.body).toEqual([{ id: 1, title: "League", genre: "Computer", releaseYear: 2005 }]);
     });
   });
   describe("DELETE", () => {
     it("responds 200", async () => {
-      const res = await request(server).delete("/shoes/:id");
+      const res = await request(server).delete("/games/:id");
       expect(res.status).toBe(200);
     });
   });
