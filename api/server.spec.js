@@ -63,8 +63,20 @@ describe("server", () => {
   });
   describe("DELETE", () => {
     it("responds 200", async () => {
-      const res = await request(server).delete("/games/:id");
+      let newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
+      await request(server)
+      .post("/games")
+      .send(newGame);
+      const res = await request(server).delete("/games/1");
       expect(res.status).toBe(200);
+    });
+    it("responds 404", async () => {
+      let newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
+      await request(server)
+      .post("/games")
+      .send(newGame);
+      const res = await request(server).delete("/games/2");
+      expect(res.status).toBe(404);
     });
   });
 });

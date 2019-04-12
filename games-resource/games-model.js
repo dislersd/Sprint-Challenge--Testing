@@ -23,7 +23,7 @@ async function update(id, changes) {
 }
 
 async function remove(id) {
-  await db("games")
+  return await db("games")
     .where({ id })
     .del();
 }

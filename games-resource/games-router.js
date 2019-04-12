@@ -46,9 +46,12 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const {id} = req.params;
-    await db.remove(id);
-    res.status(200).json({ message: 'successfully deleted' })
+    const count = await db.remove(req.params.id);
+		if (count > 0) {
+			res.status(200).json({ message: 'Game successfully deleted' });
+		} else {
+			res.status(404).json({ message: 'No game with that ID' });
+		}
   } catch (error) {
     res.status(500).json({ message: 'error deleting' })
   }
