@@ -1,7 +1,11 @@
 const request = require("supertest");
 const server = require("./server.js");
+const db = require("../data/dbConfig.js");
 
 describe("server", () => {
+  beforeEach(async () => {
+    await db("games").truncate();
+  });
   describe("GET /", () => {
     it("responds 200 OK", async () => {
       const res = await request(server).get("/");
@@ -14,7 +18,11 @@ describe("server", () => {
   });
   describe("POST /games", () => {
     it("responds 201 with new post", async () => {
-      const newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
+      const newGame = {
+        title: "League2",
+        genre: "Computer",
+        releaseYear: 2005
+      };
       const res = await request(server)
         .post("/games")
         .send(newGame);
@@ -25,28 +33,28 @@ describe("server", () => {
       const res = await request(server)
         .post("/games")
         .send(newGame);
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(422);
     });
     it("returns new post after posting", async () => {
-      const newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
+      let newGame = { title: "League", genre: "Computer", releaseYear: 2005 };
       const res = await request(server)
-        .post("/games")
-        .send(newGame);
-      expect(res.type).toBe("object");
+      .post("/games")
+      .send(newGame);
+      expect(res.data)
     });
   });
-  describe('GET /games', () => {
-    it('Returns status 200', async () => {
-      const res = await request(server).get('/games');
-      expect(res.status).toBe(200)
+  describe("GET /games", () => {
+    it("Returns status 200", async () => {
+      const res = await request(server).get("/games");
+      expect(res.status).toBe(200);
     });
-    it('Return empty array if no games', async () => {
-      const res = await request(server).get('/games')
-      expect(res.data).toEqual('[]')
+    it("Return empty array if no games", async () => {
+      const res = await request(server).get("/games");
+      expect(res.data).toEqual("[]");
     });
-    it('Returns array of games', async () => {
-      const res = await request(server).get('/games');
-      expect(res.type).toBe('array')
+    it("Returns array of games", async () => {
+      const res = await request(server).get("/games");
+      expect(res.type).toBe("array");
     });
   });
   describe("DELETE", () => {
