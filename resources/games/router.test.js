@@ -1,6 +1,6 @@
 const request = require("supertest");
-const server = require("./server.js");
-const db = require("../data/dbConfig.js");
+const server = require("../../api/server");
+const db = require("../../data/dbConfig");
 
 describe("server", () => {
   beforeEach(async () => {
