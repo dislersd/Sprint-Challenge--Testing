@@ -1,6 +1,6 @@
 const express = require("express");
 const server = express();
-const gamesRouter = require("../games-resource/games-router.js");
+const gamesRouter = require("../resources/games/games-router");
 
 server.use(express.json());
 server.use("/games", gamesRouter);

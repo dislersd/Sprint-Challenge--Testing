@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const db = require('./games-model.js');
+const db = require('./games-model');
 
 router.get("/", async (req, res) => {
   try {
